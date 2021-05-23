@@ -6,32 +6,33 @@ import { API } from '../../config';
 import Preloader from '../Preloader/Preloader'
 import MainPage from './MainPage';
 
-class MainPageContainer extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    componentDidMount() {
-        this.props.toggleIsFetching(true)
-        axios.get(API)
+const MainPageContainer = (props) => {
+
+    React.useEffect(() => {
+        serchVideoByName()
+    }, [])
+
+    const serchVideoByName = (name = '') => {
+        props.toggleIsFetching(true)
+
+        axios.get(API + name)
             .then(response => {
-                this.props.toggleIsFetching(false)
-                this.props.setVideos(response.data.items)
+                props.toggleIsFetching(false)
+                props.setVideos(response.data.items)
             })
     }
 
-    render() {
-
-        return (
-            <>
-                {this.props.isFetching ? <Preloader /> : null}
-                <MainPage
-                    videos={this.props.videos}
-                    setVideos={this.props.setVideos}
-                    toggleIsFetching={this.props.toggleIsFetching}
-                />
-            </>
-        )
-    }
+    return (
+        <>
+            {props.isFetching ? <Preloader /> : null}
+            <MainPage
+                videos={props.videos}
+                setVideos={props.setVideos}
+                toggleIsFetching={props.toggleIsFetching}
+                serchVideoByName={serchVideoByName}
+            />
+        </>
+    )
 }
 
 const mapStateToProps = (state) => {

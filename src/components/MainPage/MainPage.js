@@ -1,27 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import * as axios from 'axios'
-import { API } from '../../config';
 
 const MainPage = (props) => {
-    console.log(props)
     const [value, setValue] = useState('')
-    const serchVideoByName = (name) => {
-        props.toggleIsFetching(true)
-
-        axios.get(API + name)
-            .then(response => {
-                props.toggleIsFetching(false)
-                props.setVideos(response.data.items)
-            })
-    }
 
     return (
         <div>
 
             <form onSubmit={(e) => {
                 e.preventDefault()
-                serchVideoByName(value)
+                props.serchVideoByName(value)
             }}>
                 <input
                     type="text"
